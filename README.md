@@ -10,14 +10,18 @@ This is a repository for of the Smartthings SmartApps and Device Types
 * Setup Wizard
     ![setup](./img/setup.png)
 
+
 * Device Types
     ![devicetypes](./img/DeviceTypes.png)
+
 
 * Things View
     ![thingsview](./img/thingsview.png)
 
+
 * Pico Remotes!!
     pdate![pico](./img/pico.png)
+
 
 ## Components
 
