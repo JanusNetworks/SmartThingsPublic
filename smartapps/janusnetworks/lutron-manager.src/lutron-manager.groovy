@@ -27,29 +27,42 @@ definition(
 preferences {
 
   section("Bridge Setup"){
-  	input "IP", "text", "title": "Caseta API Bridge IP", multiple: false, required: true
+  	input "IP", "text", "title": "JanusNetworks API Bridge IP", multiple: false, required: true
     input "port", "text", "title": "Caseta API Bridge Port", multiple: false, required: true
     input "theHub", "hub", title: "On which hub?", multiple: false, required: true
   }
 
+	def deviceTypeOptions = ["rollershade": "Roller Shade",
+    						 "dimmer": "Dimmer Module",
+                             "pico": "A Pico Remote",
+                             ]
+                             
     section("Device 1") {
 		input "deviceName1", "text", title: "Device Name", required:false
-                input "deviceType1", "enum", title: "Device Type", required: false, options: [
-                "windowShade":"Window Shade",
-                "dimmer": "Dimmer",
-                "pico": "Pico Remote",
-				]
+                input "deviceType1", "enum", title: "Device Type", required: false, options: deviceTypeOptions
         input "deviceConfig1", "text", title: "Device ID", required: false
     }
     section("Device 2") {
 		input "deviceName2", "text", title: "Device Name", required:false
-                input "deviceType2", "enum", title: "Device Type", required: false, options: [
-                "windowShade":"Window Shade",
-                "dimmer": "dimmer",
-                "pico": "Pico Remote",
-				]
+                input "deviceType2", "enum", title: "Device Type", required: false, options:deviceTypeOptions
         input "deviceConfig2", "text", title: "Device ID", required: false
     }
+        section("Device 3") {
+		input "deviceName3", "text", title: "Device Name", required:false
+                input "deviceType3", "enum", title: "Device Type", required: false, options:deviceTypeOptions
+        input "deviceConfig3", "text", title: "Device ID", required: false
+    }
+    section("Device 4") {
+		input "deviceName4", "text", title: "Device Name", required:false
+                input "deviceType4", "enum", title: "Device Type", required: false, options:deviceTypeOptions
+        input "deviceConfig4", "text", title: "Device ID", required: false
+    }
+ 	section("Device 5") {
+		input "deviceName5", "text", title: "Device Name", required:false
+                input "deviceType5", "enum", title: "Device Type", required: false, options:deviceTypeOptions
+        input "deviceConfig5", "text", title: "Device ID", required: false
+    }
+
 
     
     // add additional Devices for each Lutron you will use
@@ -66,24 +79,23 @@ def initialize() {
     subscribe(location, null, response, [filterEvents:false])
 	setupDevice(deviceName1, deviceType1, deviceConfig1);
     setupDevice(deviceName2, deviceType2, deviceConfig2);
+    setupDevice(deviceName3, deviceType3, deviceConfig3);
+	setupDevice(deviceName4, deviceType4, deviceConfig4);
+    setupDevice(deviceName5, deviceType5, deviceConfig5);
+
 	// setup additional devices here
-    
 }
 
 def updated() {
 	// called when changes are made to the smartapp configuration
     log.debug "Updated with settings: ${settings}"
-    
-    setupDevice(deviceName1, deviceType1, deviceConfig1);
+	setupDevice(deviceName1, deviceType1, deviceConfig1);
     setupDevice(deviceName2, deviceType2, deviceConfig2);
-
-    
-    
+    setupDevice(deviceName3, deviceType3, deviceConfig3);
+	setupDevice(deviceName4, deviceType4, deviceConfig4);
+    setupDevice(deviceName5, deviceType5, deviceConfig5);    
 }
 
-def updateDevice(deviceName, deviceType, deviceConfig){
-	
-}
 def setupDevice(deviceName, deviceType, deviceConfig) {
 	log.debug "Lutron Manager setupDevice()"
 	if(deviceName){
@@ -101,14 +113,20 @@ def setupDevice(deviceName, deviceType, deviceConfig) {
         switch(deviceType) {
         	case "pico":
             	log.trace "Adding a pico remote called $deviceName on device id #$deviceConfig"
-				def d = addChildDevice("kecorbin", "Lutron Pico", GetDeviceNetworkID(deviceConfig), theHub.id, [label:deviceName, name:deviceName])
+				def d = addChildDevice("JanusNetworks", "Lutron Pico", GetDeviceNetworkID(deviceConfig), theHub.id, [label:deviceName, name:deviceName])
                 // subscribe to events if necessary
          		// subscribe(d, <capability>, callbackmethod)
                 // subscribe(d, "switch", switchChange)
 				break;
-            case "dimmer":
+            case "rollershade":
+            	log.trace "Adding a rollershade called $deviceName on device id #$deviceConfig"
+				def d = addChildDevice("JanusNetworks", "Lutron RollerShade", GetDeviceNetworkID(deviceConfig), theHub.id, [label:deviceName, name:deviceName])
+                
+            	break;
+
+			case "dimmer":
             	log.trace "Adding a dimmer called $deviceName on device id #$deviceConfig"
-				def d = addChildDevice("kecorbin", "Lutron Dimmer", GetDeviceNetworkID(deviceConfig), theHub.id, [label:deviceName, name:deviceName])
+				def d = addChildDevice("JanusNetworks", "Lutron Dimmer", GetDeviceNetworkID(deviceConfig), theHub.id, [label:deviceName, name:deviceName])
                 
             	break;
         }
