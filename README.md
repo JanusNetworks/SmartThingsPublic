@@ -7,20 +7,27 @@ This is a repository for of the Smartthings SmartApps and Device Types
 **NOTE:** This integration requires additional hardware, details will be added in the future
 
 ### Screenshots
-* Setup Wizard
-    ![setup](./img/setup.png)
+#### Setup Wizard
+
+![setup](./img/setup.png)
 
 
-* Device Types
-    ![devicetypes](./img/DeviceTypes.png)
+#### Device Types
 
 
-* Things View
-    ![thingsview](./img/thingsview.png)
+![devicetypes](./img/DeviceTypes.png)
 
 
-* Pico Remotes!!
-    pdate![pico](./img/pico.png)
+#### Things View
+
+
+![thingsview](./img/thingsview.png)
+
+
+#### Pico Remotes!!
+
+
+![pico](./img/pico.png)
 
 
 ## Components
