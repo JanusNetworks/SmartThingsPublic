@@ -7,7 +7,7 @@ This is a repository for of the Smartthings SmartApps and Device Types
 **NOTE:** This integration requires additional hardware, details will be added in the future
 
 * Lutron Manager
-  A Service manager for interacting with Lutron controllers including Caseta, RadioRA, and others
+  - A Service manager for interacting with Lutron controllers including Caseta, RadioRA, and others
   
 * Lutron Device Types
 
