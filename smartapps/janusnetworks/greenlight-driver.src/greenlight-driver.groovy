@@ -87,7 +87,7 @@ def registerDevice(dev) {
             "job_name": name,
             "system_id": generateSystemId(hub),
            	"devices": [
-            			[uniqueid: dev.deviceNetworkId,
+            			[uniqueid: getDevId(dev),
 	                     status: "Ok",
                          dev_name: dev.getDisplayName(),
                          firmware: hub.getFirmwareVersionString(),
@@ -164,6 +164,14 @@ def updated() {
 
 
 // HELPER FUNCTIONS
+
+// zigbee device ID's are too long for greenlight schema 
+def getDevId(dev) {
+	log.debug("length is: ${dev.deviceNetworkId.length()}")
+	def result = (dev.deviceNetworkId.length()>10) ? dev.deviceNetworkId[-9..-1] : dev.deviceNetworkId
+    log.debug("Greenlight unique_id: ${result}")
+    return result
+}
 
 // MAC address isn't exposed via hub, so we'll have to fake it using guid
 def generateSystemId(hub) {
