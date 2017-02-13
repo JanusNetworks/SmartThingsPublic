@@ -46,9 +46,8 @@ preferences {
 def installed() {
     log.debug "Installed with settings: ${settings}"
     
-    runEvery15Minutes(initialize)
+
     initialize()
-    registerHub()
 }
 
 // registers hub with greenlight engine
@@ -74,6 +73,7 @@ def registerHub() {
         ]
     log.debug("Data is: ${data}")
 	sendPost("/api/v1/system", data)
+    
 }
 
 // register/update device with greenlight, called from event handlers
@@ -123,7 +123,9 @@ def initialize() {
 
     // Update the bridge
     // updateSubscription()
+    runIn(60*3, initialize)
     registerHub()
+
 }
 
 // Update the bridge"s subscription
