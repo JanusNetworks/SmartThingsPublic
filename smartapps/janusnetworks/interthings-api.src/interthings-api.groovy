@@ -25,12 +25,32 @@ preferences {
 }
 
 mappings {
-
+ // returns currenmode e.g. {"mode": "Away"}
+    path("/mode") {
+        action: [
+            GET: "getMode"
+        ]
+    }
+    path("/mode/:mode_name") {
+        action: [
+            PUT: "setMode"
+        ]
+    }
+    path("/alarm") {
+        action: [
+            GET: "getAlarmMode"
+        ]
+    }
+    path("/alarm/:mode") {
+        action: [
+            PUT: "setAlarmMode"
+        ]
+    }
 	path("/:deviceType") {
-		action: [
-			GET: "list"
-		]
-	}
+        action: [
+            GET: "list"
+        ]
+    }
 	path("/:deviceType/states") {
 		action: [
 			GET: "listStates"
@@ -74,6 +94,32 @@ def updated() {
 		unsubscribe(device)
 	}
 	log.debug settings
+}
+
+def getModes() {
+	def allModes = location.modes 
+    return allModes
+}
+
+def setMode() {
+	def mode_name = params.mode_name
+	log.debug('attempting to set mode to ' + mode_name)
+	location.setMode(mode_name)
+
+    return 'OK'
+}
+
+def getAlarmMode() {
+	def mode = location.currentState("alarmSystemStatus")?.value
+    log.debug(mode)
+    return ['mode': mode]
+	//sendLocationEvent(name: "alarmSystemStatus" , value : "away|stay|off" )
+}
+
+def setAlarmMode() {
+	def mode = params.mode
+    log.debug("setting SHM mode to: " + mode)
+	sendLocationEvent(name: "alarmSystemStatus", value: mode)
 }
 
 def list() {
