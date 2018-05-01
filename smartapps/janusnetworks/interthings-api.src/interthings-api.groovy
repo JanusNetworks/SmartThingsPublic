@@ -21,6 +21,7 @@ preferences {
 		input "humiditySensors", "capability.relativeHumidityMeasurement", title: "Which Relative Humidity Sensors?", multiple: true, required: false
 		input "alarms", "capability.alarm", title: "Which Sirens?", multiple: true, required: false
 		input "locks", "capability.lock", title: "Which Locks?", multiple: true, required: false
+        input "battery", "capability.battery", title: "Which Batteries?", multiple: true, required: false
 	}
 }
 
@@ -41,7 +42,13 @@ mappings {
             GET: "getAlarmMode"
         ]
     }
-    path("/alarm/:mode") {
+    path("/batteries") {
+        action: [
+            GET: "getBatteries"
+        ]
+    }
+
+	path("/alarm/:mode") {
         action: [
             PUT: "setAlarmMode"
         ]
@@ -107,6 +114,16 @@ def setMode() {
 	location.setMode(mode_name)
 
     return 'OK'
+}
+
+def getBatteries() {
+	log.debug("getting batteries")
+	def resp = []
+     battery.each {
+      resp << [name: it.displayName, value: it.currentValue("battery")]
+    }
+    //def resp = ["foo": "bar"]
+    return resp
 }
 
 def getAlarmMode() {
